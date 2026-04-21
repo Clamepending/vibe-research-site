@@ -3,63 +3,470 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Vibe Research installs Remote Vibes, a browser terminal for coding agents, experiments, shared memory, and Tailscale access."
+    >
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f6f2e8'/%3E%3Cpath d='M13 42 25 17l10 21 6-13 10 17' fill='none' stroke='%23172126' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13 50h38' stroke='%23ee6b3a' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E"
+    >
     <title>Vibe Research</title>
     <style>
       :root {
-        color-scheme: light dark;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: #f5f1ea;
+        color-scheme: light;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: #eef3f1;
         color: #172126;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+      }
+
+      * {
+        box-sizing: border-box;
       }
 
       body {
         min-height: 100vh;
         margin: 0;
-        display: grid;
-        place-items: center;
+        background:
+          linear-gradient(180deg, rgba(238, 243, 241, 0.18), rgba(238, 243, 241, 0.9)),
+          url("https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=2200&q=80")
+            center 36% / cover fixed;
+        color: #172126;
       }
 
-      main {
-        width: min(88vw, 760px);
+      a {
+        color: inherit;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .site-header {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 24px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 760;
+        letter-spacing: 0;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        border: 1px solid rgba(23, 33, 38, 0.18);
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: rgba(238, 243, 241, 0.72);
+        box-shadow: 0 18px 44px rgba(23, 33, 38, 0.1);
+      }
+
+      .brand-mark svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .nav-link {
+        color: rgba(23, 33, 38, 0.68);
+        font-size: 0.94rem;
+        font-weight: 650;
+        text-decoration: none;
+      }
+
+      .hero {
+        width: min(1180px, calc(100% - 40px));
+        min-height: calc(100vh - 64px);
+        margin: 0 auto;
+        padding: 54px 0 42px;
+        display: grid;
+        align-items: center;
+      }
+
+      .hero-content {
+        width: min(850px, 100%);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 18px;
+        color: rgba(23, 33, 38, 0.72);
+        font-size: 0.88rem;
+        font-weight: 760;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 34px;
+        height: 2px;
+        background: #ee6b3a;
       }
 
       h1 {
-        margin: 0 0 16px;
-        font-size: clamp(2.6rem, 10vw, 6.8rem);
-        line-height: 0.88;
+        max-width: 980px;
+        margin: 0;
+        font-size: clamp(3.25rem, 8vw, 6.45rem);
+        line-height: 0.94;
         letter-spacing: 0;
       }
 
-      p {
-        max-width: 56ch;
-        margin: 0 0 28px;
-        color: #4d5b61;
-        font-size: 1.12rem;
-        line-height: 1.65;
+      .lede {
+        max-width: 690px;
+        margin: 22px 0 24px;
+        color: #314148;
+        font-size: clamp(1.04rem, 1.7vw, 1.26rem);
+        line-height: 1.58;
+      }
+
+      .install-block {
+        width: min(760px, 100%);
+        border: 1px solid rgba(23, 33, 38, 0.16);
+        border-radius: 8px;
+        overflow: hidden;
+        background: rgba(15, 23, 28, 0.96);
+        box-shadow: 0 24px 80px rgba(15, 23, 28, 0.24);
+      }
+
+      .install-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 16px;
+        background: #203035;
+        color: #dce8e7;
+        font-size: 0.86rem;
+        font-weight: 700;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #b9e5d8;
+      }
+
+      .status::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #4fd18b;
       }
 
       pre {
         overflow-x: auto;
         margin: 0;
-        padding: 20px;
-        border: 1px solid #d5cdc0;
-        border-radius: 8px;
-        background: #11181c;
-        color: #f8f3ea;
-        font-size: 1rem;
-        line-height: 1.5;
+        padding: 22px 18px;
+        color: #f4f8f6;
+        font-size: clamp(0.9rem, 2.5vw, 1.08rem);
+        line-height: 1.65;
       }
 
       code {
         font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       }
+
+      .hero-notes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+        color: rgba(23, 33, 38, 0.78);
+        font-size: 0.95rem;
+        font-weight: 650;
+      }
+
+      .hero-notes span {
+        padding: 8px 11px;
+        border: 1px solid rgba(23, 33, 38, 0.14);
+        border-radius: 8px;
+        background: rgba(238, 243, 241, 0.72);
+      }
+
+      .content-band {
+        background: #eef3f1;
+      }
+
+      .section {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 76px 0;
+      }
+
+      .section-headline {
+        max-width: 760px;
+        margin: 0 0 36px;
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        background: #cbd8d2;
+        border: 1px solid #cbd8d2;
+      }
+
+      .feature {
+        min-height: 220px;
+        padding: 26px;
+        background: #f8fbf8;
+      }
+
+      .feature svg {
+        width: 28px;
+        height: 28px;
+        margin-bottom: 36px;
+        color: #ee6b3a;
+      }
+
+      .feature h2 {
+        margin: 0 0 12px;
+        font-size: 1.24rem;
+        letter-spacing: 0;
+      }
+
+      .feature p {
+        margin: 0;
+        color: #506067;
+        line-height: 1.62;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 48px;
+        align-items: start;
+      }
+
+      .steps {
+        counter-reset: step;
+        display: grid;
+        gap: 18px;
+      }
+
+      .step {
+        counter-increment: step;
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .step::before {
+        content: counter(step);
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: #172126;
+        color: #f4f8f6;
+        font-weight: 780;
+      }
+
+      .step h2 {
+        margin: 0 0 6px;
+        font-size: 1.1rem;
+      }
+
+      .step p {
+        margin: 0;
+        color: #506067;
+        line-height: 1.58;
+      }
+
+      .footer {
+        border-top: 1px solid #cbd8d2;
+        background: #f8fbf8;
+      }
+
+      .footer-inner {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 30px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        color: #617076;
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 820px) {
+        body {
+          background-attachment: scroll;
+        }
+
+        .site-header {
+          width: min(100% - 28px, 1180px);
+        }
+
+        .hero {
+          width: min(100% - 28px, 1180px);
+          min-height: calc(100vh - 54px);
+          padding: 48px 0 38px;
+        }
+
+        h1 {
+          font-size: clamp(2.8rem, 13vw, 3.25rem);
+          line-height: 0.98;
+        }
+
+        .lede {
+          font-size: 1rem;
+        }
+
+        pre {
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+        }
+
+        .feature-grid,
+        .split {
+          grid-template-columns: 1fr;
+        }
+
+        .section {
+          width: min(100% - 28px, 1180px);
+          padding: 56px 0;
+        }
+
+        .footer-inner {
+          width: min(100% - 28px, 1180px);
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
     </style>
   </head>
   <body>
-    <main>
-      <h1>Vibe Research</h1>
-      <p>Remote coding-agent infrastructure for experiments, shared memory, and browser-based terminals over Tailscale.</p>
-      <pre><code>curl -fsSL https://vibe-research.net/install.sh | bash</code></pre>
-    </main>
+    <div class="page">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="Vibe Research home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 15.5 9 5l4.3 9.2L16 9l4 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 19h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>Vibe Research</span>
+        </a>
+        <a class="nav-link" href="https://github.com/Clamepending/remote-vibes">GitHub</a>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-content">
+            <p class="eyebrow">Remote Vibes installer</p>
+            <h1 id="hero-title">Run coding agents anywhere.</h1>
+            <p class="lede">
+              Install a browser-based terminal for Claude Code, Codex, Gemini, and other coding agents.
+              Remote Vibes keeps sessions reachable over Tailscale and gives agents a shared memory folder.
+            </p>
+            <div class="install-block" aria-label="Install command">
+              <div class="install-bar">
+                <span>install.sh</span>
+                <span class="status">latest release</span>
+              </div>
+              <pre><code>curl -fsSL https://vibe-research.net/install.sh | bash</code></pre>
+            </div>
+            <div class="hero-notes" aria-label="Install highlights">
+              <span>macOS and Linux</span>
+              <span>Tailscale access</span>
+              <span>Git-backed brain folder</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="content-band">
+          <section class="section" aria-labelledby="features-title">
+            <h2 class="section-headline" id="features-title">One install command for agent workstations.</h2>
+            <div class="feature-grid">
+              <article class="feature">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 5h16v10H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M8 19h8M12 15v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <h2>Browser terminal</h2>
+                <p>Open persistent coding-agent sessions from another machine, tablet, or phone without juggling SSH windows.</p>
+              </article>
+              <article class="feature">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 8a5 5 0 0 1 10 0v8a5 5 0 0 1-10 0z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M10 8h4M10 12h4M10 16h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <h2>Shared memory</h2>
+                <p>Choose or clone a markdown brain folder so agents can keep project notes, results, and handoffs in one place.</p>
+              </article>
+              <article class="feature">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12c3-6 11-6 14 0-3 6-11 6-14 0z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <h2>Visual workflows</h2>
+                <p>Give agents browser tools and image-aware attachments for richer debugging, design review, and experiment loops.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="section split" aria-labelledby="setup-title">
+            <div>
+              <h2 class="section-headline" id="setup-title">What happens after install?</h2>
+            </div>
+            <div class="steps">
+              <article class="step">
+                <div>
+                  <h2>Run the command on the machine you want to control.</h2>
+                  <p>The installer prepares Node, Remote Vibes, Tailscale support, and a background service where available.</p>
+                </div>
+              </article>
+              <article class="step">
+                <div>
+                  <h2>Open the Tailscale URL or scan the QR code.</h2>
+                  <p>Remote Vibes prints the reachable URL after launch so you can connect from your laptop or phone.</p>
+                </div>
+              </article>
+              <article class="step">
+                <div>
+                  <h2>Choose a brain folder and start an agent.</h2>
+                  <p>Create a fresh folder or paste a GitHub brain repo URL, then launch Claude Code, Codex, Gemini, or a shell.</p>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <span>Vibe Research</span>
+          <span>Installer delegates to the canonical Remote Vibes release channel.</span>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
