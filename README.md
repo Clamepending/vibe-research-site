@@ -8,5 +8,5 @@ The public installer command is:
 curl -fsSL https://vibe-research.net/install.sh | bash
 ```
 
-`install.sh` delegates to the canonical Remote Vibes installer in
-[`Clamepending/remote-vibes`](https://github.com/Clamepending/remote-vibes).
+`install.sh` resolves the latest Remote Vibes GitHub Release, then delegates to
+that release's installer.
