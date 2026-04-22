@@ -213,6 +213,28 @@ p {
   color: #c8c5b7;
 }
 
+.build-footer {
+  margin-top: 66px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.build-footer p:not(.section-kicker) {
+  max-width: 560px;
+  color: #c8c5b7;
+  font-size: 18px;
+}
+
+.build-footer a {
+  color: var(--gold);
+  font-weight: 760;
+}
+
+.build-footer a:hover,
+.build-footer a:focus-visible {
+  color: var(--ink-strong);
+}
+
 @media (max-width: 720px) {
   .site-header {
     padding: 22px 20px;
@@ -245,6 +267,10 @@ p {
   }
 
   .idea-section {
+    margin-top: 54px;
+  }
+
+  .build-footer {
     margin-top: 54px;
   }
 }
