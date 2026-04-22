@@ -435,6 +435,49 @@
         white-space: nowrap;
       }
 
+      .masterplan-section {
+        display: flex;
+        justify-content: center;
+        padding: 8px 0 0;
+      }
+
+      .masterplan-button {
+        min-height: 48px;
+        border: 1px solid rgba(255, 140, 95, 0.38);
+        border-radius: 8px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: rgba(25, 26, 31, 0.86);
+        color: var(--text);
+        font-size: 0.98rem;
+        font-weight: 780;
+        text-decoration: none;
+        box-shadow: 0 18px 54px rgba(0, 0, 0, 0.24);
+        transition:
+          border-color 160ms ease,
+          color 160ms ease,
+          transform 160ms ease;
+      }
+
+      .masterplan-button:hover,
+      .masterplan-button:focus-visible {
+        border-color: rgba(255, 140, 95, 0.74);
+        color: var(--accent);
+        outline: none;
+      }
+
+      .masterplan-button:active {
+        transform: translateY(1px);
+      }
+
+      .masterplan-button svg {
+        width: 18px;
+        height: 18px;
+      }
+
       @media (max-width: 640px) {
         .page {
           width: min(100% - 24px, 980px);
@@ -480,6 +523,14 @@
           align-items: flex-start;
           flex-direction: column;
           gap: 8px;
+        }
+
+        .masterplan-section {
+          justify-content: stretch;
+        }
+
+        .masterplan-button {
+          width: 100%;
         }
       }
     </style>
@@ -601,6 +652,15 @@
             </a>
           </article>
         </div>
+      </section>
+
+      <section class="masterplan-section" aria-label="Masterplan">
+        <a class="masterplan-button" href="/masterplan/">
+          Read masterplan
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </section>
     </main>
 
