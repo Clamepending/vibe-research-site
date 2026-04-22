@@ -32,7 +32,7 @@ jobs:
           set -euo pipefail
           mkdir -p _site
           cp CNAME index.html install.sh _site/
-          cp -R assets _site/
+          cp -R assets masterplan _site/
           chmod 0644 _site/install.sh
           touch _site/.nojekyll
 

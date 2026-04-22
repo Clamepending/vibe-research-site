@@ -1,0 +1,257 @@
+:root {
+  color-scheme: dark;
+  --paper: #090b08;
+  --paper-soft: #10150f;
+  --ink: #d7d5c7;
+  --ink-strong: #f3efd9;
+  --muted: #8e9180;
+  --line: #2d3427;
+  --line-strong: #44503a;
+  --gold: #d6a94b;
+  --green: #82a868;
+  --moss: #202d1d;
+  --ember: #bb6947;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(214, 169, 75, 0.32);
+  color: var(--ink-strong);
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(19, 31, 17, 0.72) 0%, rgba(9, 11, 8, 0) 360px),
+    var(--paper);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.graph-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(9, 11, 8, 0.9) 0%, rgba(9, 11, 8, 0.36) 42%, rgba(9, 11, 8, 0.86) 100%),
+    linear-gradient(180deg, rgba(9, 11, 8, 0.18) 0%, rgba(9, 11, 8, 0.8) 86%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 30px;
+  font-family: "Times New Roman", Georgia, serif;
+}
+
+.wordmark {
+  color: var(--ink-strong);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.mail-link {
+  display: inline-grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: var(--muted);
+}
+
+.mail-link:hover {
+  color: var(--gold);
+}
+
+.mail-link svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 1px 24px 88px;
+}
+
+.post {
+  width: min(100%, 760px);
+  margin: 22vh auto 0;
+}
+
+.meta,
+.section-kicker {
+  color: var(--gold);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.meta {
+  margin: 0 0 24px;
+}
+
+h1,
+h2 {
+  color: var(--ink-strong);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+h1 {
+  max-width: 620px;
+  margin: 0 0 10px;
+  font-size: 48px;
+  line-height: 1.05;
+}
+
+h2 {
+  max-width: 620px;
+  margin: 8px 0 0;
+  font-size: 34px;
+  line-height: 1.12;
+}
+
+p {
+  max-width: 610px;
+  margin: 28px 0 0;
+}
+
+.dek {
+  margin-top: 0;
+  color: #b8b6a7;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.clash-figure {
+  width: min(980px, calc(100vw - 48px));
+  margin: 68px 0 0 50%;
+  transform: translateX(-50%);
+}
+
+.clash-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--moss);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.44);
+}
+
+.clash-figure figcaption {
+  max-width: 720px;
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.clash-figure figcaption a {
+  color: var(--gold);
+}
+
+.idea-section {
+  margin-top: 68px;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+}
+
+.section-kicker {
+  margin: 0;
+}
+
+.idea-section p:not(.section-kicker) {
+  color: #c8c5b7;
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    padding: 22px 20px;
+  }
+
+  main {
+    padding: 1px 20px 64px;
+  }
+
+  .post {
+    margin-top: 18vh;
+  }
+
+  h1 {
+    font-size: 36px;
+    line-height: 1.08;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  .dek {
+    font-size: 17px;
+  }
+
+  .clash-figure {
+    width: calc(100vw - 28px);
+    margin-top: 52px;
+  }
+
+  .idea-section {
+    margin-top: 54px;
+  }
+}
+
+@media (max-width: 390px) {
+  .wordmark {
+    font-size: 12px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+}
