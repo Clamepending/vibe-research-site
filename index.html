@@ -284,63 +284,126 @@
 
       .tweet-card {
         position: relative;
-        min-height: 260px;
-        display: grid;
-        align-items: start;
-        overflow: hidden;
+        min-height: 292px;
         border-radius: 8px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow: hidden;
+        background:
+          linear-gradient(180deg, rgba(17, 23, 30, 0.9), rgba(10, 12, 17, 0.78)),
+          rgba(10, 12, 17, 0.7);
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.3);
         scroll-snap-align: start;
       }
 
-      .tweet-card::before,
-      .tweet-card::after {
+      .tweet-card::before {
         content: "";
         position: absolute;
-        bottom: -1px;
-        z-index: 3;
-        background: var(--bg);
+        inset: 0;
+        background:
+          radial-gradient(circle at 18% 8%, rgba(255, 140, 95, 0.13), transparent 30%),
+          radial-gradient(circle at 88% 18%, rgba(122, 199, 183, 0.1), transparent 34%);
+        opacity: 0.72;
         pointer-events: none;
       }
 
-      .tweet-card::before {
-        right: -1px;
-        left: -1px;
-        height: 12px;
+      .tweet-card > * {
+        position: relative;
+        z-index: 1;
       }
 
-      .tweet-card::after {
-        right: -1px;
-        width: 54px;
-        height: 54px;
-        clip-path: polygon(100% 0, 100% 100%, 0 100%);
+      .tweet-link {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-height: 100%;
+        color: inherit;
+        text-decoration: none;
       }
 
-      .tweet-card iframe {
-        width: calc(100% + 4px) !important;
-        max-width: calc(100% + 4px) !important;
-        margin: -2px 0 0 -2px !important;
-      }
-
-      .twitter-tweet {
-        width: 100% !important;
-        margin: 0 !important;
-        color: var(--muted);
-      }
-
-      .tweet-fallback {
-        width: 100%;
-        min-height: 220px;
+      .tweet-header {
         display: grid;
-        place-items: center;
-        text-align: center;
+        grid-template-columns: 44px 1fr 24px;
+        align-items: center;
+        gap: 12px;
       }
 
-      .tweet-fallback a {
+      .tweet-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        object-fit: cover;
+      }
+
+      .tweet-author {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+      }
+
+      .tweet-name {
         color: var(--text);
-        font-size: 1.05rem;
-        font-weight: 760;
-        text-decoration-color: rgba(255, 140, 95, 0.6);
-        text-underline-offset: 4px;
+        font-size: 1rem;
+        font-weight: 800;
+        line-height: 1.1;
+      }
+
+      .tweet-handle {
+        color: rgba(245, 241, 236, 0.54);
+        font-size: 0.94rem;
+        font-weight: 680;
+        line-height: 1.2;
+      }
+
+      .tweet-x {
+        width: 22px;
+        height: 22px;
+        color: rgba(245, 241, 236, 0.84);
+      }
+
+      .tweet-text {
+        margin: 0;
+        color: rgba(245, 241, 236, 0.94);
+        font-size: clamp(1.02rem, 2vw, 1.22rem);
+        font-weight: 640;
+        line-height: 1.28;
+      }
+
+      .tweet-text .mention,
+      .tweet-text .post-link {
+        color: #7fc7e5;
+      }
+
+      .tweet-media {
+        width: 100%;
+        aspect-ratio: 1.64 / 1;
+        border-radius: 8px;
+        object-fit: cover;
+        background: rgba(7, 9, 13, 0.5);
+      }
+
+      .tweet-spacer {
+        flex: 1;
+      }
+
+      .tweet-footer {
+        margin-top: auto;
+        border-top: 1px solid rgba(245, 241, 236, 0.1);
+        padding-top: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        color: rgba(245, 241, 236, 0.56);
+        font-size: 0.92rem;
+        font-weight: 680;
+      }
+
+      .tweet-cta {
+        color: #8ed8ed;
+        white-space: nowrap;
       }
 
       @media (max-width: 640px) {
@@ -373,6 +436,21 @@
 
         .agent-card:last-child {
           grid-column: 1 / -1;
+        }
+
+        .tweet-carousel {
+          grid-auto-columns: minmax(282px, 88vw);
+          gap: 18px;
+        }
+
+        .tweet-card {
+          padding: 16px;
+        }
+
+        .tweet-footer {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 8px;
         }
       }
     </style>
@@ -436,20 +514,54 @@
         </div>
         <div class="tweet-carousel">
           <article class="tweet-card">
-            <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-cards="hidden" data-conversation="none">
-              <a href="https://twitter.com/clamepending/status/2039185482639462763?ref_src=twsrc%5Etfw">View @clamepending's post on X</a>
-            </blockquote>
+            <a class="tweet-link" href="https://twitter.com/clamepending/status/2039185482639462763" target="_blank" rel="noopener noreferrer">
+              <div class="tweet-header">
+                <img class="tweet-avatar" src="https://pbs.twimg.com/profile_images/2018949554578829313/se3XyS46_normal.jpg" alt="" loading="lazy">
+                <div class="tweet-author">
+                  <span class="tweet-name">Mark</span>
+                  <span class="tweet-handle">@clamepending</span>
+                </div>
+                <svg class="tweet-x" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m4 4 16 16M20 4 4 20" stroke="currentColor" stroke-width="2.35" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <p class="tweet-text">
+                I DMed my agent living on my cluster from my phone and it fixed my GPT2 reimplementation and pre-trained it on a local 4090 to surpass the real GPT2-small.<br><br>
+                Super cool result it got while I was building other things. <span class="post-link">pic.x.com/yKeu0YKsom</span>
+              </p>
+              <div class="tweet-spacer"></div>
+              <div class="tweet-footer">
+                <span>8:37 PM · Mar 31, 2026</span>
+                <span class="tweet-cta">Open on X</span>
+              </div>
+            </a>
           </article>
           <article class="tweet-card">
-            <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-conversation="none">
-              <a href="https://twitter.com/clamepending/status/2046446202657616231?ref_src=twsrc%5Etfw">View @clamepending's post on X</a>
-            </blockquote>
+            <a class="tweet-link" href="https://twitter.com/clamepending/status/2046446202657616231" target="_blank" rel="noopener noreferrer">
+              <div class="tweet-header">
+                <img class="tweet-avatar" src="https://pbs.twimg.com/profile_images/2018949554578829313/se3XyS46_normal.jpg" alt="" loading="lazy">
+                <div class="tweet-author">
+                  <span class="tweet-name">Mark</span>
+                  <span class="tweet-handle">@clamepending</span>
+                </div>
+                <svg class="tweet-x" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m4 4 16 16M20 4 4 20" stroke="currentColor" stroke-width="2.35" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <p class="tweet-text">
+                my personal agent research lab is growing! Each color is a different ML research project (more and more <span class="mention">@modal</span> credits being consumed haha)
+              </p>
+              <img class="tweet-media" src="https://pbs.twimg.com/media/HGZvs0DbAAATjp2?format=jpg&amp;name=small" alt="Node graph of machine learning research projects" loading="lazy">
+              <div class="tweet-footer">
+                <span>9:29 PM · Apr 20, 2026</span>
+                <span class="tweet-cta">Open on X</span>
+              </div>
+            </a>
           </article>
         </div>
       </section>
     </main>
 
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script>
       const graphCanvas = document.querySelector(".graph-bg");
       const graphContext = graphCanvas.getContext("2d");
