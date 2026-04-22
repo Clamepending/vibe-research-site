@@ -232,12 +232,23 @@
       }
 
       .tweet-card {
+        position: relative;
         min-height: 260px;
         display: grid;
         align-items: start;
         overflow: hidden;
         border-radius: 8px;
         scroll-snap-align: start;
+      }
+
+      .tweet-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 4px var(--bg);
+        pointer-events: none;
       }
 
       .tweet-card iframe {
