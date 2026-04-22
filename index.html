@@ -18,8 +18,7 @@
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
-        --bg: #101114;
-        --panel: #191a1f;
+        --bg: #07090d;
         --panel-2: #23242b;
         --line: rgba(245, 241, 236, 0.12);
         --text: #f5f1ec;
@@ -40,10 +39,8 @@
       body {
         min-height: 100vh;
         margin: 0;
-        background:
-          linear-gradient(135deg, rgba(255, 140, 95, 0.12), transparent 34rem),
-          linear-gradient(315deg, rgba(122, 199, 183, 0.1), transparent 30rem),
-          var(--bg);
+        overflow-x: hidden;
+        background: var(--bg);
         color: var(--text);
         font-synthesis: none;
         text-rendering: optimizeLegibility;
@@ -62,7 +59,29 @@
         color: inherit;
       }
 
+      .graph-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(7, 9, 13, 0.12), rgba(7, 9, 13, 0.5) 72%),
+          linear-gradient(180deg, rgba(7, 9, 13, 0.02), rgba(7, 9, 13, 0.7));
+      }
+
       .page {
+        position: relative;
+        z-index: 1;
         width: min(980px, calc(100% - 32px));
         min-height: 100vh;
         margin: 0 auto;
@@ -201,28 +220,30 @@
 
       .tweet-carousel {
         display: grid;
-        grid-auto-columns: minmax(290px, min(560px, 86vw));
+        grid-auto-columns: minmax(300px, min(560px, 86vw));
         grid-auto-flow: column;
-        gap: 18px;
+        gap: 28px;
         overflow-x: auto;
         overscroll-behavior-x: contain;
-        padding: 2px 2px 18px;
+        padding: 0 2px 18px;
         scroll-padding-inline: 2px;
         scroll-snap-type: x mandatory;
         scrollbar-color: rgba(255, 140, 95, 0.7) transparent;
       }
 
       .tweet-card {
-        min-height: 280px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 14px;
+        min-height: 260px;
         display: grid;
-        place-items: center;
-        background:
-          linear-gradient(180deg, rgba(35, 36, 43, 0.9), rgba(17, 18, 22, 0.9)),
-          var(--panel);
+        align-items: start;
+        overflow: hidden;
+        border-radius: 8px;
         scroll-snap-align: start;
+      }
+
+      .tweet-card iframe {
+        width: calc(100% + 4px) !important;
+        max-width: calc(100% + 4px) !important;
+        margin: -2px 0 0 -2px !important;
       }
 
       .twitter-tweet {
@@ -274,6 +295,7 @@
     </style>
   </head>
   <body>
+    <canvas class="graph-bg" aria-hidden="true"></canvas>
     <main class="page">
       <section class="hero" aria-labelledby="hero-title">
         <h1 id="hero-title">vibe research</h1>
@@ -305,12 +327,12 @@
         </div>
         <div class="tweet-carousel">
           <article class="tweet-card">
-            <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+            <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-cards="hidden" data-conversation="none">
               <a href="https://twitter.com/clamepending/status/2039185482639462763?ref_src=twsrc%5Etfw">View @clamepending's post on X</a>
             </blockquote>
           </article>
           <article class="tweet-card">
-            <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+            <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-conversation="none">
               <a href="https://twitter.com/clamepending/status/2046446202657616231?ref_src=twsrc%5Etfw">View @clamepending's post on X</a>
             </blockquote>
           </article>
@@ -320,12 +342,138 @@
 
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script>
+      const graphCanvas = document.querySelector(".graph-bg");
+      const graphContext = graphCanvas.getContext("2d");
+      const pointer = {
+        x: window.innerWidth * 0.72,
+        y: window.innerHeight * 0.34,
+        active: false,
+      };
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let graphWidth = 0;
+      let graphHeight = 0;
+      let graphRatio = 1;
+      let nodes = [];
+
       const command = document.querySelector("#install-command");
       const copyButton = document.querySelector(".copy-button");
       const copyStatus = document.querySelector(".copy-status");
       const carousel = document.querySelector(".tweet-carousel");
       const previous = document.querySelector("[data-carousel-prev]");
       const next = document.querySelector("[data-carousel-next]");
+
+      function resetGraph() {
+        graphRatio = Math.min(window.devicePixelRatio || 1, 2);
+        graphWidth = window.innerWidth;
+        graphHeight = window.innerHeight;
+        graphCanvas.width = Math.floor(graphWidth * graphRatio);
+        graphCanvas.height = Math.floor(graphHeight * graphRatio);
+        graphCanvas.style.width = `${graphWidth}px`;
+        graphCanvas.style.height = `${graphHeight}px`;
+        graphContext.setTransform(graphRatio, 0, 0, graphRatio, 0, 0);
+
+        const nodeCount = Math.round(
+          Math.min(150, Math.max(70, (graphWidth * graphHeight) / 14500))
+        );
+
+        nodes = Array.from({ length: nodeCount }, () => {
+          const speed = reducedMotion ? 0 : 0.14 + Math.random() * 0.28;
+          const angle = Math.random() * Math.PI * 2;
+
+          return {
+            x: Math.random() * graphWidth,
+            y: Math.random() * graphHeight,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            r: 0.9 + Math.random() * 1.7,
+            tint: Math.random() > 0.5 ? "warm" : "cool",
+          };
+        });
+      }
+
+      function pointerGlow(x, y) {
+        const dx = x - pointer.x;
+        const dy = y - pointer.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const radius = Math.min(420, Math.max(260, graphWidth * 0.26));
+        const glow = Math.max(0, 1 - distance / radius);
+        return pointer.active ? glow * glow : glow * glow * 0.28;
+      }
+
+      function drawGraph() {
+        graphContext.clearRect(0, 0, graphWidth, graphHeight);
+        graphContext.fillStyle = "#07090d";
+        graphContext.fillRect(0, 0, graphWidth, graphHeight);
+
+        const maxDistance = Math.min(210, Math.max(130, graphWidth / 7));
+
+        for (let index = 0; index < nodes.length; index += 1) {
+          const node = nodes[index];
+
+          if (!reducedMotion) {
+            node.x += node.vx;
+            node.y += node.vy;
+
+            if (node.x < -12) node.x = graphWidth + 12;
+            if (node.x > graphWidth + 12) node.x = -12;
+            if (node.y < -12) node.y = graphHeight + 12;
+            if (node.y > graphHeight + 12) node.y = -12;
+          }
+
+          for (let nextIndex = index + 1; nextIndex < nodes.length; nextIndex += 1) {
+            const other = nodes[nextIndex];
+            const dx = node.x - other.x;
+            const dy = node.y - other.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance > maxDistance) continue;
+
+            const midX = (node.x + other.x) / 2;
+            const midY = (node.y + other.y) / 2;
+            const localGlow = pointerGlow(midX, midY);
+            const alpha = (1 - distance / maxDistance) * (0.14 + localGlow * 1.05);
+
+            graphContext.strokeStyle = `rgba(245, 241, 236, ${alpha})`;
+            graphContext.lineWidth = 0.65 + localGlow * 1.7;
+            graphContext.beginPath();
+            graphContext.moveTo(node.x, node.y);
+            graphContext.lineTo(other.x, other.y);
+            graphContext.stroke();
+          }
+        }
+
+        for (const node of nodes) {
+          const localGlow = pointerGlow(node.x, node.y);
+          const alpha = 0.22 + localGlow * 0.9;
+          const color = node.tint === "warm" ? "255, 140, 95" : "122, 199, 183";
+
+          graphContext.fillStyle = `rgba(${color}, ${alpha})`;
+          graphContext.beginPath();
+          graphContext.arc(node.x, node.y, node.r + localGlow * 2.7, 0, Math.PI * 2);
+          graphContext.fill();
+
+          if (localGlow > 0.18) {
+            graphContext.fillStyle = `rgba(245, 241, 236, ${localGlow * 0.72})`;
+            graphContext.beginPath();
+            graphContext.arc(node.x, node.y, node.r * 0.54, 0, Math.PI * 2);
+            graphContext.fill();
+          }
+        }
+
+        requestAnimationFrame(drawGraph);
+      }
+
+      window.addEventListener("pointermove", (event) => {
+        pointer.x = event.clientX;
+        pointer.y = event.clientY;
+        pointer.active = true;
+      });
+
+      window.addEventListener("pointerleave", () => {
+        pointer.active = false;
+      });
+
+      window.addEventListener("resize", resetGraph);
 
       copyButton.addEventListener("click", async () => {
         const text = command.textContent.trim();
@@ -345,12 +493,15 @@
 
       function scrollCarousel(direction) {
         const card = carousel.querySelector(".tweet-card");
-        const amount = card ? card.getBoundingClientRect().width + 18 : 420;
+        const amount = card ? card.getBoundingClientRect().width + 28 : 420;
         carousel.scrollBy({ left: direction * amount, behavior: "smooth" });
       }
 
       previous.addEventListener("click", () => scrollCarousel(-1));
       next.addEventListener("click", () => scrollCarousel(1));
+
+      resetGraph();
+      requestAnimationFrame(drawGraph);
     </script>
   </body>
 </html>
