@@ -226,6 +226,27 @@
         text-align: center;
       }
 
+      .product-shot {
+        width: 100%;
+        display: grid;
+      }
+
+      .product-shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid rgba(245, 241, 236, 0.12);
+        border-radius: 8px;
+        background: rgba(10, 12, 17, 0.58);
+        box-shadow: 0 26px 80px rgba(0, 0, 0, 0.34);
+        image-rendering: pixelated;
+      }
+
+      .install-section {
+        display: grid;
+        justify-items: start;
+      }
+
       .carousel-shell {
         display: grid;
         gap: 16px;
@@ -461,16 +482,6 @@
       <section class="hero" aria-labelledby="hero-title">
         <h1 id="hero-title">vibe research</h1>
         <p class="description">DM your agent powered research lab on your GPU cluster</p>
-        <div class="command-block">
-          <pre><code id="install-command">curl -fsSL https://vibe-research.net/install.sh | bash</code></pre>
-          <button class="copy-button" type="button" aria-label="Copy install command" title="Copy install command">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="9" y="9" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-              <path d="M5 15V7a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </button>
-          <span class="copy-status" aria-live="polite"></span>
-        </div>
       </section>
 
       <section class="agents-section" aria-labelledby="agents-title">
@@ -496,6 +507,29 @@
             <img class="agent-logo" src="https://cdn.simpleicons.org/huggingface/white" alt="" loading="lazy">
             <span class="agent-name">HF ML Intern</span>
           </div>
+        </div>
+      </section>
+
+      <section class="product-shot" aria-label="Vibe Research town preview">
+        <img
+          src="assets/agent-town-homepage.png"
+          alt="Pixel-art Vibe Research town with agent buildings, a system dashboard, and automation tools"
+          width="2442"
+          height="1384"
+          loading="eager"
+        >
+      </section>
+
+      <section class="install-section" aria-label="Install command">
+        <div class="command-block">
+          <pre><code id="install-command">curl -fsSL https://vibe-research.net/install.sh | bash</code></pre>
+          <button class="copy-button" type="button" aria-label="Copy install command" title="Copy install command">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="9" y="9" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M5 15V7a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <span class="copy-status" aria-live="polite"></span>
         </div>
       </section>
 
