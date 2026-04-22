@@ -175,6 +175,57 @@
         white-space: nowrap;
       }
 
+      .agents-section {
+        display: grid;
+        gap: 14px;
+      }
+
+      .section-title {
+        margin: 0;
+        color: rgba(245, 241, 236, 0.62);
+        font-size: 0.78rem;
+        font-weight: 780;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .agent-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .agent-card {
+        min-height: 96px;
+        border: 1px solid rgba(245, 241, 236, 0.1);
+        border-radius: 8px;
+        padding: 14px 12px;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        gap: 11px;
+        background: rgba(10, 12, 17, 0.58);
+        backdrop-filter: blur(8px);
+      }
+
+      .agent-logo {
+        width: 34px;
+        height: 34px;
+        object-fit: contain;
+      }
+
+      .agent-logo.is-inverted {
+        filter: invert(1);
+      }
+
+      .agent-name {
+        color: var(--text);
+        font-size: 0.88rem;
+        font-weight: 760;
+        line-height: 1.2;
+        text-align: center;
+      }
+
       .carousel-shell {
         display: grid;
         gap: 16px;
@@ -302,6 +353,14 @@
           white-space: normal;
           overflow-wrap: anywhere;
         }
+
+        .agent-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .agent-card:last-child {
+          grid-column: 1 / -1;
+        }
       }
     </style>
   </head>
@@ -320,6 +379,32 @@
             </svg>
           </button>
           <span class="copy-status" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <section class="agents-section" aria-labelledby="agents-title">
+        <h2 class="section-title" id="agents-title">Supported agents</h2>
+        <div class="agent-grid">
+          <div class="agent-card">
+            <img class="agent-logo is-inverted" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg" alt="" loading="lazy">
+            <span class="agent-name">Codex</span>
+          </div>
+          <div class="agent-card">
+            <img class="agent-logo" src="https://cdn.simpleicons.org/anthropic/white" alt="" loading="lazy">
+            <span class="agent-name">Claude Code</span>
+          </div>
+          <div class="agent-card">
+            <img class="agent-logo" src="https://cdn.simpleicons.org/googlegemini/white" alt="" loading="lazy">
+            <span class="agent-name">Gemini CLI</span>
+          </div>
+          <div class="agent-card">
+            <img class="agent-logo" src="https://opencode.ai/favicon.svg" alt="" loading="lazy">
+            <span class="agent-name">opencode</span>
+          </div>
+          <div class="agent-card">
+            <img class="agent-logo" src="https://cdn.simpleicons.org/huggingface/white" alt="" loading="lazy">
+            <span class="agent-name">HF ML Intern</span>
+          </div>
         </div>
       </section>
 
