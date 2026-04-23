@@ -255,6 +255,51 @@
         justify-items: start;
       }
 
+      .download-section {
+        display: grid;
+        justify-items: start;
+        gap: 10px;
+      }
+
+      .download-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 34px;
+        background: #f5f1ec;
+        color: #07090d;
+        border-radius: 999px;
+        font-weight: 780;
+        font-size: clamp(1.05rem, 2.3vw, 1.3rem);
+        text-decoration: none;
+        box-shadow: 0 20px 68px rgba(0, 0, 0, 0.32);
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease,
+          background 160ms ease;
+      }
+
+      .download-button:hover,
+      .download-button:focus-visible {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 26px 82px rgba(0, 0, 0, 0.42);
+        outline: none;
+      }
+
+      .download-apple {
+        width: 22px;
+        height: 22px;
+        fill: currentColor;
+      }
+
+      .download-note {
+        padding-left: 6px;
+        color: var(--muted);
+        font-size: 0.85rem;
+        letter-spacing: 0.02em;
+      }
+
       .carousel-shell {
         display: grid;
         gap: 16px;
@@ -577,6 +622,20 @@
           height="1384"
           loading="eager"
         >
+      </section>
+
+      <section class="download-section" aria-label="Download Vibe Research for macOS">
+        <a
+          class="download-button"
+          href="https://github.com/Clamepending/vibe-research/releases/latest/download/Vibe-Research-macOS.dmg"
+          aria-label="Download Vibe Research for macOS"
+        >
+          <svg class="download-apple" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.56 13.56c-.02-2.72 2.23-4.03 2.33-4.09-1.27-1.86-3.25-2.11-3.96-2.14-1.69-.17-3.3 1-4.16 1-.87 0-2.19-.98-3.6-.95-1.85.03-3.56 1.08-4.51 2.74-1.93 3.34-.49 8.28 1.37 11 .92 1.33 2 2.82 3.42 2.77 1.38-.06 1.9-.89 3.56-.89 1.66 0 2.13.89 3.59.86 1.49-.03 2.42-1.35 3.32-2.69.98-1.44 1.43-2.86 1.45-2.93-2.45-.64-3.8-2.91-3.81-4.68zM14.99 5.61c.75-.91 1.26-2.19 1.12-3.46-1.08.05-2.4.72-3.17 1.63-.7.8-1.31 2.1-1.14 3.35 1.21.09 2.44-.62 3.19-1.52z"/>
+          </svg>
+          <span>Download for macOS</span>
+        </a>
+        <span class="download-note">v0.2.18 · Signed &amp; Notarized · Apple silicon</span>
       </section>
 
       <section class="install-section" aria-label="Install command">
