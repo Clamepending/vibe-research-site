@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
+# vibe-research.net/install.sh — thin bootstrap that downloads the real
+# installer from the latest GitHub release asset and pipes it to bash.
+# We prefer the release-download URL (served from GitHub's CDN) over the
+# GitHub API / raw.githubusercontent.com because those endpoints are
+# aggressively IP rate-limited and 403 for a lot of users.
 set -euo pipefail
 
 VIBE_RESEARCH_REPO_SLUG="${VIBE_RESEARCH_REPO_SLUG:-${REMOTE_VIBES_REPO_SLUG:-Clamepending/vibe-research}}"
-VIBE_RESEARCH_INSTALLER_URL="${VIBE_RESEARCH_INSTALLER_URL:-${REMOTE_VIBES_INSTALLER_URL:-}}"
+VIBE_RESEARCH_INSTALLER_URL="${VIBE_RESEARCH_INSTALLER_URL:-${REMOTE_VIBES_INSTALLER_URL:-https://github.com/${VIBE_RESEARCH_REPO_SLUG}/releases/latest/download/install.sh}}"
 
-fetch_url() {
+fetch_installer() {
   if command -v curl >/dev/null 2>&1; then
-    curl -fsSL "$1"
+    curl -fsSL "$VIBE_RESEARCH_INSTALLER_URL"
     return
   fi
 
   if command -v wget >/dev/null 2>&1; then
-    wget -qO- "$1"
+    wget -qO- "$VIBE_RESEARCH_INSTALLER_URL"
     return
   fi
 
@@ -19,19 +24,10 @@ fetch_url() {
   exit 1
 }
 
-if [ -z "$VIBE_RESEARCH_INSTALLER_URL" ]; then
-  latest_tag="$(
-    fetch_url "https://api.github.com/repos/${VIBE_RESEARCH_REPO_SLUG}/releases/latest" |
-      sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' |
-      head -n 1
-  )"
-
-  if [ -z "$latest_tag" ]; then
-    printf '[vibe-research-install] Could not resolve the latest Vibe Research release.\n' >&2
-    exit 1
-  fi
-
-  VIBE_RESEARCH_INSTALLER_URL="https://raw.githubusercontent.com/${VIBE_RESEARCH_REPO_SLUG}/${latest_tag}/install.sh"
+installer="$(fetch_installer)"
+if [ -z "$installer" ]; then
+  printf '[vibe-research-install] Empty response from %s\n' "$VIBE_RESEARCH_INSTALLER_URL" >&2
+  exit 1
 fi
 
-fetch_url "$VIBE_RESEARCH_INSTALLER_URL" | bash
+printf '%s\n' "$installer" | bash
