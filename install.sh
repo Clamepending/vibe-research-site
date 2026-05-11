@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# vibe-research.net/install.sh — thin bootstrap that downloads the real
-# installer from main and pipes it to bash. Tracks main HEAD so merges
-# land on fresh installs without waiting on a release tag.
+# swarmlab.vibe-research.net/install.sh — thin bootstrap that downloads the
+# real Swarmlab installer from main and pipes it to bash. Tracks main HEAD
+# so merges land on fresh installs without waiting on a release tag.
 set -euo pipefail
 
-VIBE_RESEARCH_REPO_SLUG="${VIBE_RESEARCH_REPO_SLUG:-${REMOTE_VIBES_REPO_SLUG:-Clamepending/vibe-research}}"
+VIBE_RESEARCH_REPO_SLUG="${VIBE_RESEARCH_REPO_SLUG:-${REMOTE_VIBES_REPO_SLUG:-Clamepending/swarmlab}}"
 VIBE_RESEARCH_REF="${VIBE_RESEARCH_REF:-${REMOTE_VIBES_REF:-main}}"
 VIBE_RESEARCH_INSTALLER_URL="${VIBE_RESEARCH_INSTALLER_URL:-${REMOTE_VIBES_INSTALLER_URL:-https://raw.githubusercontent.com/${VIBE_RESEARCH_REPO_SLUG}/${VIBE_RESEARCH_REF}/install.sh}}"
 
